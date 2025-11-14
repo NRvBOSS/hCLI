@@ -1,0 +1,16 @@
+{
+  "name": "my-express-app",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "*",
+    "cors": "latest",
+    "dotenv": "*"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  }
+}
