@@ -6,7 +6,7 @@ import chalk from "chalk";
 import callExpress from "../caller/callExpress.js";
 import { generateExpress } from "../generators/express.js";
 
-program.name("icli").version("1.1.0").addHelpCommand(false);
+program.name("hcli").version("1.1.0").addHelpCommand(false);
 
 callExpress();
 

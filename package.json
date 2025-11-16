@@ -1,5 +1,5 @@
 {
-  "name": "icli",
+  "name": "hcli",
   "version": "1.1.0",
   "description": "Interactive CLI for generating Express projects",
   "license": "MIT",
