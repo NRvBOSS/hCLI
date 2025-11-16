@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import chalk from "chalk";
 import { execSync } from "child_process";
 import { mkdirSync, cpSync } from "fs";
 import path from "path";
@@ -37,7 +38,10 @@ export function generateExpress(myApp) {
     });
 
     console.log("Project ready!");
-    console.log(`\If start, write:\n  cd ${myApp}\n  npm run dev`);
+
+    console.log(
+      chalk.yellow(`\If start, write:\n  cd ${myApp}\n  npm run dev`)
+    );
   } catch (error) {
     console.error("Error when packages installing:", error.message);
   }
