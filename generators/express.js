@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import chalk from "chalk";
 import { execSync } from "child_process";
 import { mkdirSync, cpSync } from "fs";

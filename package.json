@@ -1,6 +1,6 @@
 {
-  "name": "hcli",
-  "version": "1.1.0",
+  "name": "@nrvboss/hcli",
+  "version": "1.2.0",
   "description": "Interactive CLI for generating Express projects",
   "license": "MIT",
   "main": "index.js",
@@ -9,18 +9,23 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "type": "module",
   "bin": {
-    "icli": "./bin/index.js"
+    "hcli": "./bin/index.js"
   },
   "dependencies": {
     "chalk": "^5.6.2",
     "chalk-animation": "^2.0.3",
     "commander": "^14.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
     "figlet": "^1.9.4",
     "gradient-string": "^3.0.0",
     "inquirer": "^12.11.1",
     "nanospinner": "^1.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }
