@@ -3,18 +3,19 @@ import { program } from "commander";
 import bigCliName from "../bigCliName.js";
 import inquirer from "inquirer";
 import chalk from "chalk";
-import callExpress from "../caller/callExpress.js";
-import callVue from "../caller/callVue.js";
-import callReact from "../caller/callReact.js";
+import { registerCommands } from "../caller/registerCommands.js";
 import { generateExpress } from "../generators/express.js";
 import { generateVue } from "../generators/vue.js";
 import { generateReact } from "../generators/react.js";
+import updateChecker from "../utils/updateChecker.js";
 
-program.name("hcli").version("1.2.1").addHelpCommand(false);
+program.name("hcli").version("1.3.2").addHelpCommand(false);
 
-callExpress();
-callVue();
-callReact();
+// CHECK UPDATE BEFORE ANYTHING
+updateChecker();
+
+// REGISTER DIRECT COMMANDS
+registerCommands();
 
 async function run() {
   try {
@@ -41,49 +42,28 @@ async function run() {
       },
     ]);
 
-    if (generator === "Express.JS generator") {
-      const { projectName } = await inquirer.prompt([
-        {
-          type: "input",
-          name: "projectName",
-          message: "Write your project name:",
-          validate: (input) =>
-            input.trim() !== "" ? true : "Project name cannot be empty",
-        },
-      ]);
+    const { projectName } = await inquirer.prompt([
+      {
+        type: "input",
+        name: "projectName",
+        message: "Write your project name:",
+        validate: (input) =>
+          input.trim() !== "" ? true : "Project name cannot be empty",
+      },
+    ]);
 
-      generateExpress(projectName);
-      return;
-    }
+    switch (generator) {
+      case "Express.JS generator":
+        generateExpress(projectName);
+        break;
 
-    if (generator === "Vue.JS generator") {
-      const { projectName } = await inquirer.prompt([
-        {
-          type: "input",
-          name: "projectName",
-          message: "Write your project name:",
-          validate: (input) =>
-            input.trim() !== "" ? true : "Project name cannot be empty",
-        },
-      ]);
+      case "Vue.JS generator":
+        generateVue(projectName);
+        break;
 
-      generateVue(projectName);
-      return;
-    }
-
-    if (generator === "React generator") {
-      const { projectName } = await inquirer.prompt([
-        {
-          type: "input",
-          name: "projectName",
-          message: "Write your project name:",
-          validate: (input) =>
-            input.trim() !== "" ? true : "Project name cannot be empty",
-        },
-      ]);
-
-      generateReact(projectName);
-      return;
+      case "React generator":
+        generateReact(projectName);
+        break;
     }
   } catch (err) {
     // CTRL+C HANDLING
