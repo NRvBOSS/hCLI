@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from "commander";
-import bigCliName from "../bigCliName.js";
+import bigCliName from "../utils/bigCliName.js";
 import inquirer from "inquirer";
 import chalk from "chalk";
 import { registerCommands } from "../caller/registerCommands.js";

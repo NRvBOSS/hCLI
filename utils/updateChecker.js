@@ -1,7 +1,16 @@
 import https from "https";
 import chalk from "chalk";
 import boxen from "boxen";
-import pkg from "../package.json" assert { type: "json" };
+import { readFileSync } from "fs";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+// __dirname ESM üçün
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// package.json-u oxumaq (tam təhlükəsiz üsul)
+const pkg = JSON.parse(readFileSync(__dirname + "/../package.json", "utf8"));
 
 export default function updateChecker() {
   const pkgName = pkg.name;
@@ -21,7 +30,7 @@ export default function updateChecker() {
 
           if (latest !== current) {
             const msg =
-              `${chalk.yellow("🚀 A new version of hCLI is available!")}\n\n` +
+              `${chalk.yellow("A new version of hCLI is available!")}\n\n` +
               `${chalk.white("Current version:")} ${chalk.red(current)}\n` +
               `${chalk.white("Latest version:")}  ${chalk.green(latest)}\n\n` +
               `${chalk.white("Update using:")}\n` +
