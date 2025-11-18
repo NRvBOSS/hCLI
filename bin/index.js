@@ -5,13 +5,16 @@ import inquirer from "inquirer";
 import chalk from "chalk";
 import callExpress from "../caller/callExpress.js";
 import callVue from "../caller/callVue.js";
+import callReact from "../caller/callReact.js";
 import { generateExpress } from "../generators/express.js";
 import { generateVue } from "../generators/vue.js";
+import { generateReact } from "../generators/react.js";
 
-program.name("hcli").version("1.2.0").addHelpCommand(false);
+program.name("hcli").version("1.2.1").addHelpCommand(false);
 
 callExpress();
 callVue();
+callReact();
 
 async function run() {
   try {
@@ -30,7 +33,11 @@ async function run() {
         type: "list",
         message: "Pick the generator for using:",
         name: "generator",
-        choices: ["Express.JS generator", "Vue.JS generator", "React generator"],
+        choices: [
+          "Express.JS generator",
+          "Vue.JS generator",
+          "React generator",
+        ],
       },
     ]);
 
@@ -65,7 +72,18 @@ async function run() {
     }
 
     if (generator === "React generator") {
-      console.log(chalk.blue("Coming soon..."));
+      const { projectName } = await inquirer.prompt([
+        {
+          type: "input",
+          name: "projectName",
+          message: "Write your project name:",
+          validate: (input) =>
+            input.trim() !== "" ? true : "Project name cannot be empty",
+        },
+      ]);
+
+      generateReact(projectName);
+      return;
     }
   } catch (err) {
     // CTRL+C HANDLING
