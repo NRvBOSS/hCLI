@@ -47,7 +47,8 @@ You will see the animated banner (in terminal):
 Then choose a generator:
 Express.JS generator
 Vue.JS generator
-React.JS generator
+React generator
+Nest.JS generator
 
 After selecting, enter your project name.
 Example:
@@ -61,7 +62,7 @@ If start, write:
   cd demo
   npm run dev
 
-Generators
+Generators, for example:
 
 Express Generator:
 Creates a clean Express project with:
@@ -75,34 +76,6 @@ demo/
 
 Installed packages: express, cors, dotenv, nodemon (dev)
 
-
-Vue Generator
-Creates a Vue 3 + Vite project with:
-
-demo/
- ├── src/
- │   ├── assets/
- │   ├── components/
- │   ├── views/
- │   ├── App.vue
- │   ├── main.js
- │   └── style.css
- └── index.html
-
-Installed packages: vue, vite, @vitejs/plugin-vue
-
-
-React Generator
-Will generate a modern React + Vite project with:
-
-src/
- ├── components/
- ├── assets/
- ├── App.jsx
- ├── main.jsx
- └── style.css
-
-Dependencies: react, react-dom, vite, @vitejs/plugin-react
 
 Start the project
 
