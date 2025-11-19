@@ -1,0 +1,13 @@
+{
+  "name": "nest-template",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "test": "jest"
+  }
+}

@@ -7,6 +7,7 @@ import { registerCommands } from "../caller/registerCommands.js";
 import { generateExpress } from "../generators/express.js";
 import { generateVue } from "../generators/vue.js";
 import { generateReact } from "../generators/react.js";
+import { generateNest } from "../generators/nest.js";
 import updateChecker from "../utils/updateChecker.js";
 
 program.name("hcli").version("1.3.2").addHelpCommand(false);
@@ -38,6 +39,7 @@ async function run() {
           "Express.JS generator",
           "Vue.JS generator",
           "React generator",
+          "Nest.JS generator",
         ],
       },
     ]);
@@ -63,6 +65,10 @@ async function run() {
 
       case "React generator":
         generateReact(projectName);
+        break;
+
+      case "Nest.JS generator":
+        generateNest(projectName);
         break;
     }
   } catch (err) {
