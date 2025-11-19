@@ -28,5 +28,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
-  }
+  },
+  "homepage": "https://github.com/NRvBOSS/hCLI"
 }
