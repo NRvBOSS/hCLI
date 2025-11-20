@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export function generateReact(myApp) {
-  const projectPath = path.join(cwd(), myApp);
+  const projectPath = path.isAbsolute(myApp) ? myApp : path.join(cwd(), myApp);
   mkdirSync(projectPath, { recursive: true });
 
   const templatePath = path.join(__dirname, "../templates/react");

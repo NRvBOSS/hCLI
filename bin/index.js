@@ -1,16 +1,12 @@
 #!/usr/bin/env node
 import { program } from "commander";
-import bigCliName from "../utils/bigCliName.js";
-import inquirer from "inquirer";
-import chalk from "chalk";
 import { registerCommands } from "../caller/registerCommands.js";
-import { generateExpress } from "../generators/express.js";
-import { generateVue } from "../generators/vue.js";
-import { generateReact } from "../generators/react.js";
-import { generateNest } from "../generators/nest.js";
 import updateChecker from "../utils/updateChecker.js";
+import { mainFlow } from "../flow/mainFlow.js";
+import bigCliName from "../utils/bigCliName.js";
 
-program.name("hcli").version("1.3.2").addHelpCommand(false);
+// CLI VERSION
+program.name("hcli").version("1.5.0").addHelpCommand(false);
 
 // CHECK UPDATE BEFORE ANYTHING
 updateChecker();
@@ -18,68 +14,26 @@ updateChecker();
 // REGISTER DIRECT COMMANDS
 registerCommands();
 
-async function run() {
+// START MAIN FLOW
+(async () => {
   try {
-    // DIRECT MODE
+    
+    // SHOW CLI NAME / BANNER
+    await bigCliName();
+
+    // If arguments passed, parse commands (direct mode)
     if (process.argv.length > 2) {
-      await bigCliName();
       program.parse();
       return;
     }
 
     // INTERACTIVE MODE
-    await bigCliName();
-
-    const { generator } = await inquirer.prompt([
-      {
-        type: "list",
-        message: "Pick the generator for using:",
-        name: "generator",
-        choices: [
-          "Express.JS generator",
-          "Vue.JS generator",
-          "React generator",
-          "Nest.JS generator",
-        ],
-      },
-    ]);
-
-    const { projectName } = await inquirer.prompt([
-      {
-        type: "input",
-        name: "projectName",
-        message: "Write your project name:",
-        validate: (input) =>
-          input.trim() !== "" ? true : "Project name cannot be empty",
-      },
-    ]);
-
-    switch (generator) {
-      case "Express.JS generator":
-        generateExpress(projectName);
-        break;
-
-      case "Vue.JS generator":
-        generateVue(projectName);
-        break;
-
-      case "React generator":
-        generateReact(projectName);
-        break;
-
-      case "Nest.JS generator":
-        generateNest(projectName);
-        break;
-    }
+    await mainFlow();
   } catch (err) {
-    // CTRL+C HANDLING
     if (err.name === "ExitPromptError") {
-      console.log(chalk.red("\nProcess canceled by user (Ctrl+C)."));
+      console.log("\n" + chalk.red("Process canceled by user (Ctrl+C)."));
       process.exit(0);
     }
-
     console.log("Unexpected error:", err);
   }
-}
-
-run();
+})();
