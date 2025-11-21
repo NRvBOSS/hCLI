@@ -5,7 +5,7 @@ import updateChecker from "../utils/updateChecker.js";
 import { mainFlow } from "../flow/mainFlow.js";
 import bigCliName from "../utils/bigCliName.js";
 import { ensureConfigFile } from "../utils/config.js";
-import "../utils/config.js";
+import { cleanUp } from "../utils/cleanup.js";
 
 // CLI VERSION
 program.name("hcli").version("1.6.0").addHelpCommand(false);
@@ -36,6 +36,7 @@ ensureConfigFile();
   } catch (err) {
     if (err.name === "ExitPromptError") {
       console.log("\n" + chalk.red("Process canceled by user (Ctrl+C)."));
+      cleanUp();
       process.exit(0);
     }
     console.log("Unexpected error:", err);

@@ -4,13 +4,17 @@ import { mkdirSync, cpSync } from "fs";
 import path from "path";
 import { cwd } from "process";
 import { fileURLToPath } from "url";
+import { withSpinner } from "../utils/withSpinner.js";
+import { markForCleanup } from "../utils/cleanup.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export function generateNest(myApp) {
+export async function generateNest(myApp) {
   const projectPath = path.isAbsolute(myApp) ? myApp : path.join(cwd(), myApp);
   mkdirSync(projectPath, { recursive: true });
+
+  markForCleanup(projectPath);
 
   const templatePath = path.join(__dirname, "../templates/nest");
 
@@ -20,18 +24,21 @@ export function generateNest(myApp) {
     errorOnExist: false,
   });
 
-  console.log(`${myApp}'s Nest template created.`);
+  await withSpinner("Creating Nest project...", async () => {
+    console.log(`${myApp}'s Nest template created.`);
+  });
 
   console.log("Packages installing...");
 
   try {
-    execSync(
-      `npm install @nestjs/common @nestjs/core @nestjs/platform-express reflect-metadata rxjs`,
-      { cwd: projectPath, stdio: "inherit" }
-    );
+    await withSpinner("Installing dependencies...", async () => {
+      execSync(
+        `npm install @nestjs/common @nestjs/core @nestjs/platform-express reflect-metadata rxjs`,
+        { cwd: projectPath, stdio: "inherit" }
+      );
 
-    execSync(
-      `npm install -D \
+      execSync(
+        `npm install -D \
   @eslint/eslintrc \
   @eslint/js \
   @nestjs/cli \
@@ -57,8 +64,9 @@ export function generateNest(myApp) {
   tsconfig-paths \
   typescript \
   typescript-eslint`,
-      { cwd: projectPath, stdio: "inherit" }
-    );
+        { cwd: projectPath, stdio: "inherit" }
+      );
+    });
 
     console.log("Project ready!");
 
@@ -66,6 +74,6 @@ export function generateNest(myApp) {
       chalk.redBright(`\If start, write:\n  cd ${myApp}\n  npm run dev`)
     );
   } catch (error) {
-    console.error("Error when packages installing:", error.message);
+    console.error(chalk.red("Error when packages installing:", error.message));
   }
 }

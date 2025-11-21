@@ -24,7 +24,8 @@
     "figlet": "^1.9.4",
     "gradient-string": "^3.0.0",
     "inquirer": "^12.11.1",
-    "nanospinner": "^1.2.2"
+    "nanospinner": "^1.2.2",
+    "ora": "^9.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
