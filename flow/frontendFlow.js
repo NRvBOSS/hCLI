@@ -5,6 +5,8 @@ import { generateVue } from "../generators/vue.js";
 import { generateReact } from "../generators/react.js";
 import back from "../utils/propWithBack.js";
 import { mainFlow } from "./mainFlow.js";
+import { configCommand } from "../caller/subcommands/configCommands.js";
+import { getConfig } from "../utils/config.js";
 
 export default async function frontendFlow() {
   try {

@@ -3,6 +3,7 @@ import { generateExpress } from "../generators/express.js";
 import { generateReact } from "../generators/react.js";
 import { generateVue } from "../generators/vue.js";
 import { generateNest } from "../generators/nest.js";
+import { configCommand } from "./subcommands/configCommands.js";
 
 export function registerCommands() {
   program
@@ -24,4 +25,9 @@ export function registerCommands() {
     .command("nest <myApp>")
     .description("Generate Nest project")
     .action(generateNest);
+
+  program
+    .command("config")
+    .description("Edit or view hCLI configuration")
+    .action(configCommand);
 }

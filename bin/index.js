@@ -4,9 +4,11 @@ import { registerCommands } from "../caller/registerCommands.js";
 import updateChecker from "../utils/updateChecker.js";
 import { mainFlow } from "../flow/mainFlow.js";
 import bigCliName from "../utils/bigCliName.js";
+import { ensureConfigFile } from "../utils/config.js";
+import "../utils/config.js";
 
 // CLI VERSION
-program.name("hcli").version("1.5.0").addHelpCommand(false);
+program.name("hcli").version("1.6.0").addHelpCommand(false);
 
 // CHECK UPDATE BEFORE ANYTHING
 updateChecker();
@@ -14,10 +16,12 @@ updateChecker();
 // REGISTER DIRECT COMMANDS
 registerCommands();
 
+// Make sure config exists
+ensureConfigFile();
+
 // START MAIN FLOW
 (async () => {
   try {
-    
     // SHOW CLI NAME / BANNER
     await bigCliName();
 
