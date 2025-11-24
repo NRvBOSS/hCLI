@@ -10,7 +10,7 @@ import { markForCleanup } from "../utils/cleanup.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export async function generateExpress(myApp) {
+export async function generateExpress(myApp, options) {
   const projectPath = path.isAbsolute(myApp) ? myApp : path.join(cwd(), myApp);
   mkdirSync(projectPath, { recursive: true });
 
@@ -18,11 +18,18 @@ export async function generateExpress(myApp) {
 
   const templatePath = path.join(__dirname, "../templates/express");
 
-  cpSync(templatePath, projectPath, {
-    recursive: true,
-    force: true,
-    errorOnExist: false,
-  });
+  // Copy base express template
+  cpSync(templatePath, projectPath, { recursive: true });
+
+  // Docker support
+  if (options.dockerSupport) {
+    const dockerSrc = path.join(
+      __dirname,
+      "../templates/docker/Dockerfile"
+    );
+    const dockerDest = path.join(projectPath, "Dockerfile");
+    cpSync(dockerSrc, dockerDest);
+  }
 
   await withSpinner("Creating Express project...", async () => {
     console.log(`${myApp}'s Express template created.`);
@@ -45,10 +52,8 @@ export async function generateExpress(myApp) {
 
     console.log("Project ready!");
 
-    console.log(
-      chalk.yellow(`\If start, write:\n  cd ${myApp}\n  npm run dev`)
-    );
+    console.log(chalk.yellow(`\nTo start:\n  cd ${myApp}\n  npm run dev`));
   } catch (error) {
-    console.error(chalk.red("Error when packages installing:", error.message));
+    console.error(chalk.red("Error when installing packages:", error.message));
   }
 }

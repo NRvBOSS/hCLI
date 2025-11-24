@@ -10,7 +10,7 @@ import { markForCleanup } from "../utils/cleanup.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export async function generateNest(myApp) {
+export async function generateNest(myApp, options) {
   const projectPath = path.isAbsolute(myApp) ? myApp : path.join(cwd(), myApp);
   mkdirSync(projectPath, { recursive: true });
 
@@ -23,6 +23,13 @@ export async function generateNest(myApp) {
     force: true,
     errorOnExist: false,
   });
+
+  // Docker support
+  if (options.dockerSupport) {
+    const dockerSrc = path.join(__dirname, "../templates/docker/Dockerfile");
+    const dockerDest = path.join(projectPath, "Dockerfile");
+    cpSync(dockerSrc, dockerDest);
+  }
 
   await withSpinner("Creating Nest project...", async () => {
     console.log(`${myApp}'s Nest template created.`);

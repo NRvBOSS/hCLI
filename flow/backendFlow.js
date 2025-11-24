@@ -8,13 +8,12 @@ import back from "../utils/propWithBack.js";
 
 export default async function backendFlow() {
   try {
-    // INTERACTIVE MODE
     await bigCliName();
 
     const { generator } = await inquirer.prompt([
       {
         type: "list",
-        message: "Pick the generator for using:",
+        message: "Pick the backend generator:",
         name: "generator",
         choices: back(["Express.JS generator", "Nest.JS generator"]),
       },
@@ -34,17 +33,23 @@ export default async function backendFlow() {
       },
     ]);
 
+    const { dockerSupport } = await inquirer.prompt([
+      {
+        type: "confirm",
+        name: "dockerSupport",
+        message: "Add Docker support?",
+        default: false,
+      },
+    ]);
+
     switch (generator) {
       case "Express.JS generator":
-        generateExpress(projectName);
-        break;
+        return generateExpress(projectName, { dockerSupport });
 
       case "Nest.JS generator":
-        generateNest(projectName);
-        break;
+        return generateNest(projectName, { dockerSupport });
     }
   } catch (err) {
-    // CTRL+C HANDLING
     if (err.name === "ExitPromptError") {
       console.log(chalk.red("\nProcess canceled by user (Ctrl+C)."));
       process.exit(0);

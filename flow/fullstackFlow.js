@@ -10,8 +10,6 @@ import { generateExpress } from "../generators/express.js";
 import { generateNest } from "../generators/nest.js";
 import back from "../utils/propWithBack.js";
 import { mainFlow } from "./mainFlow.js";
-// import { configCommand } from "../caller/subcommands/configCommands.js";
-// import { getConfig } from "../utils/config.js";
 
 export default async function fullFlow() {
   try {
@@ -45,6 +43,15 @@ export default async function fullFlow() {
       },
     ]);
 
+    const { dockerSupport } = await inquirer.prompt([
+      {
+        type: "confirm",
+        name: "dockerSupport",
+        message: "Add Docker support?",
+        default: false,
+      },
+    ]);
+
     // Root folder
     const rootPath = path.join(cwd(), projectName);
     mkdirSync(rootPath, { recursive: true });
@@ -61,22 +68,22 @@ export default async function fullFlow() {
     switch (stack) {
       case "Vue.JS + Express.JS":
         await generateVue(frontendPath);
-        await generateExpress(backendPath);
+        await generateExpress(backendPath, { dockerSupport });
         break;
 
       case "React + Express.JS":
         await generateReact(frontendPath);
-        await generateExpress(backendPath);
+        await generateExpress(backendPath, { dockerSupport });
         break;
 
       case "Vue.JS + Nest.JS":
         await generateVue(frontendPath);
-        await generateNest(backendPath);
+        await generateNest(backendPath, { dockerSupport });
         break;
 
       case "React + Nest.JS":
         await generateReact(frontendPath);
-        await generateNest(backendPath);
+        await generateNest(backendPath, { dockerSupport });
         break;
     }
 
